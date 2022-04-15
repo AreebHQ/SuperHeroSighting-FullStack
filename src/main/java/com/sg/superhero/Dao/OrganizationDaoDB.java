@@ -49,7 +49,7 @@ public class OrganizationDaoDB implements OrganizationDao{
     @Override
     public Organization getOrganizationById(int id) {
         try {
-            final String SELECT_ORG_BY_ID = "SELECT * FROM organization WHERE id = ?";
+            final String SELECT_ORG_BY_ID = "SELECT * FROM organization WHERE organizationId = ?";
             return jdbc.queryForObject(SELECT_ORG_BY_ID, new OrganizationMapper(), id);
         } catch (DataAccessException ex) {
             return null;
@@ -83,7 +83,7 @@ public class OrganizationDaoDB implements OrganizationDao{
         final String DELETE_MEMBER_ORG = "DELETE FROM member_organization WHERE organizationId = ?";
         jdbc.update(DELETE_MEMBER_ORG,id);
 
-        final String DELETE_ORG = "DELETE FROM organization WHERE id = ?";
+        final String DELETE_ORG = "DELETE FROM organization WHERE organizationId = ?";
         jdbc.update(DELETE_ORG,id);
     }
 }

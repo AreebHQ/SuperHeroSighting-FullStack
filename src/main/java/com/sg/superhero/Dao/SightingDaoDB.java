@@ -25,16 +25,34 @@ public class SightingDaoDB implements SightingDao{
         public Sighting mapRow(ResultSet rs, int rowNum) throws SQLException {
 
             Sighting sighting = new Sighting();
+            sighting.setMemberId(rs.getInt("memberId"));
+            sighting.setLocationId(rs.getInt("locationId"));
+            sighting.setDate(rs.getString("date"));
 
-
-            return null;
+            return sighting;
         }
     }
 
+    /*SELECT supermember.name,location.name, sighting.date FROM supermember JOIN
+    sighting ON supermember.memberId=sighting.memberId JOIN
+     location on location.locationId = sighting.locationId;
+     */
+
+    /*@Override
+    public List<SuperMember> getMembersForOrganization(int id) {
+
+        final String SELECT_MEMBERS_FOR_ORGANIZATION = "SELECT s.* FROM supermember s JOIN" +
+                " member_organization org ON org.memberId = s.memberId WHERE org.organizationId = ?";
+        return jdbc.query(SELECT_MEMBERS_FOR_ORGANIZATION,new SuperMemberDaoDB.SuperMemberMapper(),id);
+
+    }*/
 
     @Override
     public Sighting addSighting(Sighting sighting) {
-        return null;
+        final String INSERT_SIGHTING ="INSERT INTO sighting(memberId, locationId, date) VALUES(?,?,?)";
+        jdbc.update(INSERT_SIGHTING,sighting.getMemberId(), sighting.getLocationId(),sighting.getDate());
+
+        return sighting;
     }
 
     @Override
@@ -44,12 +62,14 @@ public class SightingDaoDB implements SightingDao{
 
     @Override
     public List<Sighting> getAllSighting() {
-        return null;
+        final String SELECT_ALL_SIGHTINGS = "SELECT * FROM sighting";
+        return jdbc.query(SELECT_ALL_SIGHTINGS,new SightingMapping());
+        //need to associate location and member
     }
 
     @Override
     public void updateSighting(Sighting sighting) {
-
+        final String UPDATE_ORG = "UPDATE sighting SET memberId = ?, locationId = ?, date = ? WHERE organizationId = ?";
     }
 
     @Override

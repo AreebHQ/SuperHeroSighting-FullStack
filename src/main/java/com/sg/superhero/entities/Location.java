@@ -9,7 +9,16 @@ public class Location {
     String street;
     String city;
     String state;
-    double coordinates;
+    String coordinates;
+
+    public String getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
+    }
+
     List<SuperMember> superMembers;
 
     public List<SuperMember> getSuperMembers() {
@@ -68,11 +77,5 @@ public class Location {
         this.state = state;
     }
 
-    public double getCoordinates() {
-        return coordinates;
-    }
 
-    public void setCoordinates(double coordinates) {
-        this.coordinates = coordinates;
-    }
 }

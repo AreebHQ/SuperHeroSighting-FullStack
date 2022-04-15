@@ -1,11 +1,30 @@
 package com.sg.superhero.entities;
 
 public class Sighting {
+
     int id;
+    int memberId;
+    int locationId;
     Location location;
     SuperMember superMember;
     String date;
 
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
+    }
+
+    public int getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(int locationId) {
+        this.locationId = locationId;
+    }
     public int getId() {
         return id;
     }

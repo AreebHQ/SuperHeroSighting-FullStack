@@ -24,12 +24,13 @@ public class LocationDaoDB implements LocationDao{
         @Override
         public Location mapRow(ResultSet rs, int rowNum) throws SQLException {
             Location location = new Location();
+            location.setId(rs.getInt("locationId"));
             location.setName(rs.getString("name"));
             location.setDescription(rs.getString("description"));
             location.setStreet(rs.getString("street"));
             location.setCity(rs.getString("city"));
             location.setState(rs.getString("state"));
-            location.setCoordinates(Double.parseDouble(rs.getString("coordinates")));
+            location.setCoordinates(rs.getString("coordinates"));
 
             return location;
         }
