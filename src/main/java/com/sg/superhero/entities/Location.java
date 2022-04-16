@@ -9,6 +9,16 @@ public class Location {
     String street;
     String city;
     String state;
+    String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     String coordinates;
 
     public String getCoordinates() {

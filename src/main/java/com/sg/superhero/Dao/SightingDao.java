@@ -13,7 +13,7 @@ public interface SightingDao {
     void updateSighting(Sighting sighting);
     void deleteSighting(int id);
 
-    List<Sighting> getSightingForSuperMember(SuperMember superMember);
-    List<Sighting> getSightingForLocation(Location location);
+    List<Sighting> getSightingForSuperMember(int id);
+    List<Sighting> getSightingForLocation(int id);
 
 }

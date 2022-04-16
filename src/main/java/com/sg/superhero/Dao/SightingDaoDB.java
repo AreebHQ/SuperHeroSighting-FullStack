@@ -20,11 +20,13 @@ public class SightingDaoDB implements SightingDao{
 
     public static final class SightingMapping implements RowMapper<Sighting>
     {
+        int counter=0;
 
         @Override
         public Sighting mapRow(ResultSet rs, int rowNum) throws SQLException {
 
             Sighting sighting = new Sighting();
+            sighting.setId(++counter);
             sighting.setMemberId(rs.getInt("memberId"));
             sighting.setLocationId(rs.getInt("locationId"));
             sighting.setDate(rs.getString("date"));
@@ -32,20 +34,6 @@ public class SightingDaoDB implements SightingDao{
             return sighting;
         }
     }
-
-    /*SELECT supermember.name,location.name, sighting.date FROM supermember JOIN
-    sighting ON supermember.memberId=sighting.memberId JOIN
-     location on location.locationId = sighting.locationId;
-     */
-
-    /*@Override
-    public List<SuperMember> getMembersForOrganization(int id) {
-
-        final String SELECT_MEMBERS_FOR_ORGANIZATION = "SELECT s.* FROM supermember s JOIN" +
-                " member_organization org ON org.memberId = s.memberId WHERE org.organizationId = ?";
-        return jdbc.query(SELECT_MEMBERS_FOR_ORGANIZATION,new SuperMemberDaoDB.SuperMemberMapper(),id);
-
-    }*/
 
     @Override
     public Sighting addSighting(Sighting sighting) {
@@ -57,33 +45,67 @@ public class SightingDaoDB implements SightingDao{
 
     @Override
     public Sighting getSightingById(int id) {
-        return null;
+        final String SELECT_SIGHTING =  "SELECT * FROM sighting WHERE sightingId = ?";
+        Sighting sighting = jdbc.queryForObject(SELECT_SIGHTING,new SightingMapping(),id);
+        associateMemberAndLocation(sighting);
+        return sighting;
     }
+
+    private void associateMemberAndLocation(Sighting sighting) {
+        final String SELECT_LOCATION_FOR_SIGHTING = "SELECT * FROM location WHERE locationId = ?";
+        sighting.setLocation(jdbc.queryForObject(SELECT_LOCATION_FOR_SIGHTING, new LocationDaoDB.LocationMapper(),sighting.getLocationId()));
+
+        final String SELECT_MEMBER_FOR_SIGHTING = "SELECT * FROM supermember WHERE memberId = ?";
+        sighting.setSuperMember(jdbc.queryForObject(SELECT_MEMBER_FOR_SIGHTING, new SuperMemberDaoDB.SuperMemberMapper(),sighting.getMemberId()));
+    }
+
+
+
+
 
     @Override
     public List<Sighting> getAllSighting() {
-        final String SELECT_ALL_SIGHTINGS = "SELECT * FROM sighting";
-        return jdbc.query(SELECT_ALL_SIGHTINGS,new SightingMapping());
-        //need to associate location and member
+        final String SELECT_ALL_SIGHTINGS = "SELECT * FROM sighting ORDER BY date DESC";
+        List<Sighting> sightings = jdbc.query(SELECT_ALL_SIGHTINGS,new SightingMapping());
+        // associate location and member
+        for(Sighting sighting : sightings)
+        {
+            associateMemberAndLocation(sighting);
+        }
+        return sightings;
+
     }
 
     @Override
     public void updateSighting(Sighting sighting) {
-        final String UPDATE_ORG = "UPDATE sighting SET memberId = ?, locationId = ?, date = ? WHERE organizationId = ?";
+        final String UPDATE_SIGHTING= "UPDATE sighting SET memberId = ?, locationId = ?, date = ? WHERE sightingId = ?";
+        jdbc.update(UPDATE_SIGHTING,
+                sighting.getMemberId(),
+                sighting.getLocationId(),
+                sighting.getDate(),
+                sighting.getId());
     }
 
     @Override
     public void deleteSighting(int id) {
-
+        final String DELETE_SIGHTING =  "DELETE FROM sighting WHERE sightingId = ?";
+        jdbc.update(DELETE_SIGHTING,id);
     }
 
     @Override
-    public List<Sighting> getSightingForSuperMember(SuperMember superMember) {
-        return null;
+    public List<Sighting> getSightingForSuperMember(int id) {
+
+        final String SELECT_MEMBER_FOR_SIGHTING = "SELECT * FROM sighting WHERE memberId = ?";
+        List<Sighting> sightings = jdbc.query(SELECT_MEMBER_FOR_SIGHTING,new SightingMapping(),id);
+
+        return sightings;
     }
 
     @Override
-    public List<Sighting> getSightingForLocation(Location location) {
-        return null;
+    public List<Sighting> getSightingForLocation(int id) {
+        final String SELECT_LOCATION_FOR_SIGHTING = "SELECT * FROM sighting WHERE locationId = ?";
+        List<Sighting> sightings = jdbc.query(SELECT_LOCATION_FOR_SIGHTING,new SightingMapping(),id);
+
+        return sightings;
     }
 }
