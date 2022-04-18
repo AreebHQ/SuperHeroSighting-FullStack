@@ -69,6 +69,22 @@
                             </div>
                         </div>
 					
+						<div class="form-group row">
+                            <label for="organizations" class="col-3 col-form-label">
+                                Organizations</label>
+                            <div class="col-9">
+                                <select multiple id="organizations" name="organizationId" 
+                                        class="form-control" >
+                                    <option th:each="organization : ${organizations}" 
+                                            th:value="${organization.id}" 
+                                            th:text="${organization.name}">
+                                        Organization Name</option>
+                                </select>
+                            </div>
+                        </div>
+					
+					
+					
 						
                         <button type="submit" class="btn btn-primary">Add Super Member</button>
                     </form>
@@ -85,6 +101,7 @@
                                 <th>Name</th>
                                 <th>Description</th>
 								<th>SuperPower</th>	
+								<th>Details</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
@@ -95,6 +112,7 @@
                                 <td th:text="${superMember.name}">Super Member Name</td>
                                 <td th:text="${superMember.description}">Super Member Description</td>
 								<td th:text="${superMember.superPower}">Super Member Power</td>
+								<td><a href="#" th:href="@{/superMemberDetail(id=${superMember.id})}">Details</a></td>
                                 <td><a href="#" th:href="@{/editSuperMember(id=${superMember.id})}">Edit</a></td>
                                 <td><a href="#" th:href="@{/deleteSuperMember(id=${superMember.id})}">Delete</a></td>
                             </tr>

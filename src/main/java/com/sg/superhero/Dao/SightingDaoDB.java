@@ -20,13 +20,12 @@ public class SightingDaoDB implements SightingDao{
 
     public static final class SightingMapping implements RowMapper<Sighting>
     {
-        int counter=0;
 
         @Override
         public Sighting mapRow(ResultSet rs, int rowNum) throws SQLException {
 
             Sighting sighting = new Sighting();
-            sighting.setId(++counter);
+            sighting.setId(rs.getInt("sightingId"));
             sighting.setMemberId(rs.getInt("memberId"));
             sighting.setLocationId(rs.getInt("locationId"));
             sighting.setDate(rs.getString("date"));
@@ -44,6 +43,15 @@ public class SightingDaoDB implements SightingDao{
     }
 
     @Override
+    public Sighting getSightingById(int memberId, int locationId) {
+        final String SELECT_SIGHTING =  "SELECT * FROM sighting WHERE memberId = ? AND locationId = ?";
+        Sighting sighting = jdbc.queryForObject(SELECT_SIGHTING,new SightingMapping(),memberId,locationId);
+        associateMemberAndLocation(sighting);
+        return sighting;
+    }
+
+
+    @Override
     public Sighting getSightingById(int id) {
         final String SELECT_SIGHTING =  "SELECT * FROM sighting WHERE sightingId = ?";
         Sighting sighting = jdbc.queryForObject(SELECT_SIGHTING,new SightingMapping(),id);
@@ -58,8 +66,6 @@ public class SightingDaoDB implements SightingDao{
         final String SELECT_MEMBER_FOR_SIGHTING = "SELECT * FROM supermember WHERE memberId = ?";
         sighting.setSuperMember(jdbc.queryForObject(SELECT_MEMBER_FOR_SIGHTING, new SuperMemberDaoDB.SuperMemberMapper(),sighting.getMemberId()));
     }
-
-
 
 
 
@@ -87,9 +93,9 @@ public class SightingDaoDB implements SightingDao{
     }
 
     @Override
-    public void deleteSighting(int id) {
-        final String DELETE_SIGHTING =  "DELETE FROM sighting WHERE sightingId = ?";
-        jdbc.update(DELETE_SIGHTING,id);
+    public void deleteSighting(int memberId, int locationId) {
+        final String DELETE_SIGHTING =  "DELETE FROM sighting WHERE locationId = ? AND memberId = ?";
+        jdbc.update(DELETE_SIGHTING,locationId,memberId);
     }
 
     @Override

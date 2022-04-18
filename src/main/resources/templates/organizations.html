@@ -57,14 +57,7 @@
                                        id="name" class="form-control"/>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="description" class="col-3 col-form-label">
-                                Description</label>
-                            <div class="col-9">
-                                <input type="text" name="description" 
-                                       id="description" class="form-control"/>
-                            </div>
-                        </div>
+                
                         <div class="form-group row">
                             <label for="street" class="col-3 col-form-label">
                                 Street</label>
@@ -108,22 +101,22 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Description</th>
 								<th>Street</th>
 								<th>City</th>
 								<th>State</th>
+								<th>Details</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="organization : ${organizations}">
-                                <td th:text="${organization.id}">Super Member ID</td>
-                                <td th:text="${organization.name}">Super Member Name</td>
-                                <td th:text="${organization.description}">Super Member Description</td>
-								<td th:text="${organization.street}">Super Member Street</td>
-								<td th:text="${organization.city}">Super Member City</td>
-								<td th:text="${organization.state}">Super Member State</td>
+                                <td th:text="${organization.id}">Organization ID</td>
+                                <td th:text="${organization.name}"> Name</td>
+								<td th:text="${organization.street}"> Street</td>
+								<td th:text="${organization.city}">  City</td>
+								<td th:text="${organization.state}">  State</td>
+								<td><a href="#" th:href="@{/organizationDetail(id=${organization.id})}">Details</a></td>
                                 <td><a href="#" th:href="@{/editOrganization(id=${organization.id})}">Edit</a></td>
                                 <td><a href="#" th:href="@{/deleteOrganization(id=${organization.id})}">Delete</a></td>
                             </tr>

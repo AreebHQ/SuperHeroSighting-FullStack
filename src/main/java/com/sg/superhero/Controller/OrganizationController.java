@@ -72,7 +72,7 @@ public class OrganizationController {
         return "redirect:/organizations";
     }
 
-    @PostMapping("deleteOrganization")
+    @GetMapping("deleteOrganization")
     public String deleteOrganization(HttpServletRequest request)
     {
         int id = Integer.parseInt(request.getParameter("id"));
@@ -105,6 +105,15 @@ public class OrganizationController {
         organizationDao.updateOrganization(organization);
         return "redirect:/organizations";
 
+    }
+
+    @GetMapping("organizationDetail")
+    public String organizationDetail(Integer id, Model model)
+    {
+        Organization organization = organizationDao.getOrganizationById(id);
+
+        model.addAttribute("organization",organization);
+        return "organizationDetail";
     }
 
 }

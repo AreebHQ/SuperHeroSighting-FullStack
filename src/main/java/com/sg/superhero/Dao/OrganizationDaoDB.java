@@ -1,6 +1,7 @@
 package com.sg.superhero.Dao;
 
 import com.sg.superhero.entities.Organization;
+import com.sg.superhero.entities.SuperMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -50,7 +51,9 @@ public class OrganizationDaoDB implements OrganizationDao{
     public Organization getOrganizationById(int id) {
         try {
             final String SELECT_ORG_BY_ID = "SELECT * FROM organization WHERE organizationId = ?";
-            return jdbc.queryForObject(SELECT_ORG_BY_ID, new OrganizationMapper(), id);
+            Organization organization = jdbc.queryForObject(SELECT_ORG_BY_ID, new OrganizationMapper(), id);
+            organization.setSuperMembers(getMembersForOrganization(id));
+            return organization;
         } catch (DataAccessException ex) {
             return null;
         }
@@ -85,5 +88,14 @@ public class OrganizationDaoDB implements OrganizationDao{
 
         final String DELETE_ORG = "DELETE FROM organization WHERE organizationId = ?";
         jdbc.update(DELETE_ORG,id);
+    }
+
+    @Override
+    public List<SuperMember> getMembersForOrganization(int id) {
+
+        final String SELECT_MEMBERS_FOR_ORGANIZATION = "SELECT s.* FROM supermember s JOIN" +
+                " member_organization org ON org.memberId = s.memberId WHERE org.organizationId = ?";
+        return jdbc.query(SELECT_MEMBERS_FOR_ORGANIZATION,new SuperMemberDaoDB.SuperMemberMapper(),id);
+
     }
 }

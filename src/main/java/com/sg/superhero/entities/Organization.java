@@ -2,6 +2,7 @@ package com.sg.superhero.entities;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 public class Organization {
 
@@ -18,6 +19,16 @@ public class Organization {
     String city;
     @NotBlank(message = "State must not be empty.")
     String state;
+
+    List<SuperMember> superMembers;
+
+    public List<SuperMember> getSuperMembers() {
+        return superMembers;
+    }
+
+    public void setSuperMembers(List<SuperMember> superMembers) {
+        this.superMembers = superMembers;
+    }
 
     public int getId() {
         return id;
