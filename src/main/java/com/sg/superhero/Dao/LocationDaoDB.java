@@ -38,7 +38,7 @@ public class LocationDaoDB implements LocationDao{
     @Override
     public Location addLocation(Location location) {
         final String INSERT_LOCATION = "INSERT INTO location(name, description, street, city, state, coordinates)" +
-                " VALUES(?,?,?,?,?)";
+                " VALUES(?,?,?,?,?,?)";
         jdbc.update(INSERT_LOCATION,
                 location.getName(),
                 location.getDescription(),
@@ -49,7 +49,9 @@ public class LocationDaoDB implements LocationDao{
 
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         location.setId(newId);
-        insertSuperMember(location);
+        if (location.getSuperMembers() != null) {
+            insertSuperMember(location);
+        }
         return location;
     }
 
