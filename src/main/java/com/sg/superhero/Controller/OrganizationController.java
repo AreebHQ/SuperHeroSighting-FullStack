@@ -16,9 +16,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.lang.reflect.Member;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class OrganizationController {
@@ -39,7 +37,9 @@ public class OrganizationController {
     public String displayOrganizations(Model model)
     {
         List<Organization> organizations = organizationDao.getAllOrganizations();
+        List<SuperMember> superMembers = superMemberDao.getAllSuperMembers();
         model.addAttribute("organizations", organizations);
+        model.addAttribute("superMembers", superMembers);
         model.addAttribute("errors", violations);
         return "organizations";
     }
@@ -61,6 +61,14 @@ public class OrganizationController {
         organization.setStreet(street);
         organization.setCity(city);
         organization.setState(state);
+
+        String[] superMemberIds = request.getParameterValues("superMemberId");
+        List<SuperMember> superMembers = new ArrayList<>();
+        for(String superMemberId : superMemberIds)
+        {
+            superMembers.add(superMemberDao.getSuperMemberById(Integer.parseInt(superMemberId)));
+        }
+        organization.setSuperMembers(superMembers);
 
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(organization);

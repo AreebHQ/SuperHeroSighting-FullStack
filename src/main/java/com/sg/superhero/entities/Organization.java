@@ -13,12 +13,16 @@ public class Organization {
     @NotBlank(message = "Description must not be empty.")
     @Size(max = 500, message = "Description must be less than 500 characters.")
     String description;
+    @Size(max = 50, message = "Street must be less than 50 characters.")
     @NotBlank(message = "Street must not be empty.")
     String street;
+    @Size(max = 50, message = "City must be less than 50 characters.")
     @NotBlank(message = "City must not be empty.")
     String city;
+    @Size(max = 50, message = "State must be less than 50 characters.")
     @NotBlank(message = "State must not be empty.")
     String state;
+
 
     List<SuperMember> superMembers;
 

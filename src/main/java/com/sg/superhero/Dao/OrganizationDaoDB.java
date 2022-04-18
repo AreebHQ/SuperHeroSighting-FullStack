@@ -43,8 +43,20 @@ public class OrganizationDaoDB implements OrganizationDao{
         jdbc.update(INSERT_ORG,organization.getName(),organization.getDescription(),organization.getStreet(),organization.getCity(),organization.getState());
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()",Integer.class);
         organization.setId(newId);
+        if(organization.getSuperMembers()!=null)
+        {
+            insertOrganizationMembers(organization);
+        }
 
         return organization;
+    }
+
+    private void insertOrganizationMembers(Organization organization) {
+        final String INSERT_ORGANIZATION_MEMBERS = "INSERT INTO member_organization(memberId,organizationId) VALUES(?,?);";
+        for(SuperMember superMember : organization.getSuperMembers())
+        {
+            jdbc.update(INSERT_ORGANIZATION_MEMBERS,superMember.getId(),organization.getId());
+        }
     }
 
     @Override

@@ -58,6 +58,16 @@
                             </div>
                         </div>
                 
+				
+						<div class="form-group row">
+                            <label for="description" class="col-3 col-form-label">
+                                Description</label>
+                            <div class="col-9">
+                                <input type="text" name="description" 
+                                       id="description" class="form-control"/>
+                            </div>
+                        </div>
+				
                         <div class="form-group row">
                             <label for="street" class="col-3 col-form-label">
                                 Street</label>
@@ -84,6 +94,25 @@
                                        id="state" class="form-control"/>
                             </div>
                         </div>
+						
+						
+						<div class="form-group row">
+                            <label for="superMembers" class="col-3 col-form-label">
+                                Members</label>
+                            <div class="col-9">
+                                <select multiple id="superMembers" name="superMemberId" 
+                                        class="form-control" >
+                                    <option th:each="superMember : ${superMembers}" 
+                                            th:value="${superMember.id}" 
+                                            th:text="${superMember.name}">
+                                        Member Name</option>
+                                </select>
+                            </div>
+                        </div>
+					
+					
+					
+					
 					
 						
 						

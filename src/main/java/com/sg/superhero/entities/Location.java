@@ -1,25 +1,31 @@
 package com.sg.superhero.entities;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class Location {
     int id;
+    @NotBlank(message = "Location name must not be empty.")
+    @Size(max = 50, message = "Location name must be less than 50 characters.")
     String name;
+    @NotBlank(message = "Description must not be empty.")
+    @Size(max = 100, message = "Description must be less than 100 characters.")
     String description;
+    @Size(max = 50, message = "Street must be less than 50 characters.")
+    @NotBlank(message = "Street must not be empty.")
     String street;
+    @Size(max = 50, message = "City must be less than 50 characters.")
+    @NotBlank(message = "City must not be empty.")
     String city;
+    @Size(max = 50, message = "State must be less than 50 characters.")
+    @NotBlank(message = "State must not be empty.")
     String state;
-    String address;
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
+    @Size(max = 100, message = "Coordinates must be less than 100 characters.")
+    @NotBlank(message = "Coordinates must not be empty.")
     String coordinates;
+
+    List<SuperMember> superMembers;
 
     public String getCoordinates() {
         return coordinates;
@@ -28,8 +34,6 @@ public class Location {
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
     }
-
-    List<SuperMember> superMembers;
 
     public List<SuperMember> getSuperMembers() {
         return superMembers;

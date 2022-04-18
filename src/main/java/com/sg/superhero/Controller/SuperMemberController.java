@@ -14,9 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class SuperMemberController {
@@ -30,6 +35,8 @@ public class SuperMemberController {
     @Autowired
     LocationDao locationDao;
 
+    Set<ConstraintViolation<SuperMember>> violations = new HashSet<>();
+
     @GetMapping("superMembers")
     public String displaySuperMembers(Model model)
     {
@@ -41,9 +48,12 @@ public class SuperMemberController {
     }
 
     @PostMapping("addSuperMember")
-    public String addSuperMember(String name, String description, String superpower, HttpServletRequest request)
+    public String addSuperMember( HttpServletRequest request)
     {
         SuperMember superMember = new SuperMember();
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String superpower = request.getParameter("superpower");
         superMember.setName(name);
         superMember.setDescription(description);
         superMember.setSuperPower(superpower);
@@ -56,7 +66,15 @@ public class SuperMemberController {
         }
 
         superMember.setOrganizations(organizations);
-        superMemberDao.addSuperMember(superMember);
+
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(superMember);
+
+        if(violations.isEmpty())
+        {
+            superMemberDao.addSuperMember(superMember);
+        }
+
         return "redirect:/superMembers";
     }
 
@@ -79,6 +97,7 @@ public class SuperMemberController {
     @PostMapping("editSuperMember")
     public String performEditSuperMember(@Valid SuperMember superMember, BindingResult result)
     {
+
         if(result.hasErrors())
         {
             return "editSuperMember";
