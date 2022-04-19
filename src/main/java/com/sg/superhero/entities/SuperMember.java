@@ -5,6 +5,7 @@ import com.sun.jdi.request.StepRequest;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 
 public class SuperMember {
     int id;
@@ -59,4 +60,16 @@ public class SuperMember {
         this.superPower = superPower;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SuperMember that = (SuperMember) o;
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(superPower, that.superPower) && Objects.equals(organizations, that.organizations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, superPower, organizations);
+    }
 }

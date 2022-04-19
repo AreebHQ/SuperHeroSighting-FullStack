@@ -3,6 +3,7 @@ package com.sg.superhero.entities;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 
 public class Organization {
 
@@ -80,5 +81,18 @@ public class Organization {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Organization that = (Organization) o;
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(street, that.street) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(superMembers, that.superMembers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, street, city, state, superMembers);
     }
 }

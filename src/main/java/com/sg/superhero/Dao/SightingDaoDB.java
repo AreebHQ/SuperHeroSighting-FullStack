@@ -1,8 +1,6 @@
 package com.sg.superhero.Dao;
 
-import com.sg.superhero.entities.Location;
 import com.sg.superhero.entities.Sighting;
-import com.sg.superhero.entities.SuperMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

@@ -1,12 +1,18 @@
 package com.sg.superhero.entities;
 
+import javax.validation.constraints.NotBlank;
+import java.util.Objects;
+
 public class Sighting {
 
     int id;
     int memberId;
     int locationId;
+
     Location location;
+
     SuperMember superMember;
+    @NotBlank(message = "Date must not be empty.")
     String date;
 
 
@@ -55,5 +61,18 @@ public class Sighting {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sighting sighting = (Sighting) o;
+        return id == sighting.id && memberId == sighting.memberId && locationId == sighting.locationId && Objects.equals(location, sighting.location) && Objects.equals(superMember, sighting.superMember) && Objects.equals(date, sighting.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, memberId, locationId, location, superMember, date);
     }
 }

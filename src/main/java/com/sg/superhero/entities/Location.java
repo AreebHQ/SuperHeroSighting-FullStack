@@ -3,6 +3,7 @@ package com.sg.superhero.entities;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Objects;
 
 public class Location {
     int id;
@@ -91,5 +92,16 @@ public class Location {
         this.state = state;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return id == location.id && Objects.equals(name, location.name) && Objects.equals(description, location.description) && Objects.equals(street, location.street) && Objects.equals(city, location.city) && Objects.equals(state, location.state) && Objects.equals(coordinates, location.coordinates) && Objects.equals(superMembers, location.superMembers);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, street, city, state, coordinates, superMembers);
+    }
 }

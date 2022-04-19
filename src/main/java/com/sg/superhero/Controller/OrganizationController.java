@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.lang.reflect.Member;
 import java.util.*;
 
 @Controller
@@ -63,12 +62,16 @@ public class OrganizationController {
         organization.setState(state);
 
         String[] superMemberIds = request.getParameterValues("superMemberId");
-        List<SuperMember> superMembers = new ArrayList<>();
-        for(String superMemberId : superMemberIds)
+        if(superMemberIds != null)
         {
-            superMembers.add(superMemberDao.getSuperMemberById(Integer.parseInt(superMemberId)));
+            List<SuperMember> superMembers = new ArrayList<>();
+            for(String superMemberId : superMemberIds)
+            {
+                superMembers.add(superMemberDao.getSuperMemberById(Integer.parseInt(superMemberId)));
+            }
+            organization.setSuperMembers(superMembers);
         }
-        organization.setSuperMembers(superMembers);
+
 
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(organization);
