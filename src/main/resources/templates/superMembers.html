@@ -108,6 +108,7 @@
                                 <th>Description</th>
 								<th>SuperPower</th>	
 								<th>Details</th>
+								<th>Sightings</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
@@ -119,6 +120,7 @@
                                 <td th:text="${superMember.description}">Super Member Description</td>
 								<td th:text="${superMember.superPower}">Super Member Power</td>
 								<td><a href="#" th:href="@{/superMemberDetail(id=${superMember.id})}">Details</a></td>
+								<td><a href="#" th:href="@{/sightingsByMember(id=${superMember.id})}">Sightings</a></td>
                                 <td><a href="#" th:href="@{/editSuperMember(id=${superMember.id})}">Edit</a></td>
                                 <td><a href="#" th:href="@{/deleteSuperMember(id=${superMember.id})}">Delete</a></td>
                             </tr>

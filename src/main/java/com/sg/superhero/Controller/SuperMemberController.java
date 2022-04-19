@@ -2,8 +2,10 @@ package com.sg.superhero.Controller;
 
 import com.sg.superhero.Dao.LocationDao;
 import com.sg.superhero.Dao.OrganizationDao;
+import com.sg.superhero.Dao.SightingDao;
 import com.sg.superhero.Dao.SuperMemberDao;
 import com.sg.superhero.entities.Organization;
+import com.sg.superhero.entities.Sighting;
 import com.sg.superhero.entities.SuperMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,9 @@ public class SuperMemberController {
 
     @Autowired
     LocationDao locationDao;
+
+    @Autowired
+    SightingDao sightingDao;
 
     Set<ConstraintViolation<SuperMember>> violations = new HashSet<>();
 
@@ -115,5 +120,20 @@ public class SuperMemberController {
         model.addAttribute("superMember",superMember);
         return "superMemberDetail";
     }
+
+    @GetMapping("sightingsByMember")
+    public String sightingsByMember(HttpServletRequest request, Model model)
+    {
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        SuperMember superMember = superMemberDao.getSuperMemberById(id);
+        List<Sighting> sightings = sightingDao.getSightingForSuperMember(id);
+
+        model.addAttribute("superMember",superMember);
+        model.addAttribute("sightings",sightings);
+        return "sightingsByMember";
+    }
+
+
 
 }

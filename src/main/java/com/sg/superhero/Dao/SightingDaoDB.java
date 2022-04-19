@@ -69,13 +69,16 @@ public class SightingDaoDB implements SightingDao{
 
     @Override
     public List<Sighting> getAllSighting() {
-        final String SELECT_ALL_SIGHTINGS = "SELECT * FROM sighting ORDER BY date DESC";
+        final String SELECT_ALL_SIGHTINGS = "SELECT * FROM sighting ORDER BY sightingId DESC";
         List<Sighting> sightings = jdbc.query(SELECT_ALL_SIGHTINGS,new SightingMapping());
-        // associate location and member
-        for(Sighting sighting : sightings)
-        {
-            associateMemberAndLocation(sighting);
+        // associate location and
+        if(!sightings.isEmpty()) {
+            for(Sighting sighting : sightings)
+            {
+                associateMemberAndLocation(sighting);
+            }
         }
+
         return sightings;
 
     }
@@ -101,6 +104,12 @@ public class SightingDaoDB implements SightingDao{
 
         final String SELECT_MEMBER_FOR_SIGHTING = "SELECT * FROM sighting WHERE memberId = ?";
         List<Sighting> sightings = jdbc.query(SELECT_MEMBER_FOR_SIGHTING,new SightingMapping(),id);
+        if(!sightings.isEmpty()) {
+            for(Sighting sighting : sightings)
+            {
+                associateMemberAndLocation(sighting);
+            }
+        }
 
         return sightings;
     }
@@ -109,6 +118,12 @@ public class SightingDaoDB implements SightingDao{
     public List<Sighting> getSightingForLocation(int id) {
         final String SELECT_LOCATION_FOR_SIGHTING = "SELECT * FROM sighting WHERE locationId = ?";
         List<Sighting> sightings = jdbc.query(SELECT_LOCATION_FOR_SIGHTING,new SightingMapping(),id);
+        if(!sightings.isEmpty()) {
+            for(Sighting sighting : sightings)
+            {
+                associateMemberAndLocation(sighting);
+            }
+        }
 
         return sightings;
     }
